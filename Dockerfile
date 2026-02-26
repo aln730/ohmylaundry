@@ -1,10 +1,7 @@
-FROM nginx:alpine
+# Use official unprivileged Nginx image
+FROM nginxinc/nginx-unprivileged:alpine
 
-# Make sure Nginx can write to cache/temp
-RUN mkdir -p /var/cache/nginx /var/run/nginx \
-    && chown -R nginx:nginx /var/cache/nginx /var/run/nginx
-
-# Remove default website
+# Remove default Nginx content
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copy your website
@@ -14,7 +11,5 @@ COPY static /usr/share/nginx/html/static
 # Expose HTTP port
 EXPOSE 80
 
-# Run as unprivileged user
-USER nginx
-
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
