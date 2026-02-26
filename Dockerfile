@@ -1,10 +1,7 @@
 # Use official unprivileged Nginx image
 FROM nginxinc/nginx-unprivileged:alpine
 
-# Remove default Nginx content
-RUN rm -rf /usr/share/nginx/html/*
-
-# Copy your website
+# Copy your site (will overwrite default files)
 COPY index.html /usr/share/nginx/html/index.html
 COPY static /usr/share/nginx/html/static
 
