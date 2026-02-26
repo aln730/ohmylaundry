@@ -1,15 +1,20 @@
-# Use official Nginx image
 FROM nginx:alpine
 
-# Remove default Nginx website
+# Make sure Nginx can write to cache/temp
+RUN mkdir -p /var/cache/nginx /var/run/nginx \
+    && chown -R nginx:nginx /var/cache/nginx /var/run/nginx
+
+# Remove default website
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy your website into Nginx's html directory
+# Copy your website
 COPY index.html /usr/share/nginx/html/index.html
 COPY static /usr/share/nginx/html/static
 
-# Expose port 80
+# Expose HTTP port
 EXPOSE 80
 
-# Start Nginx
+# Run as unprivileged user
+USER nginx
+
 CMD ["nginx", "-g", "daemon off;"]
